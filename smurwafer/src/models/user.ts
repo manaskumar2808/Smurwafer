@@ -7,6 +7,7 @@ interface UserAttr {
     imageUrl: string;
     age: string;
     password: string;
+    online: boolean;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -20,6 +21,7 @@ interface UserDoc extends mongoose.Document {
     imageUrl: string;
     age: string;
     password: string;
+    online: boolean;
 }
 
 const userSchema = new mongoose.Schema({
@@ -47,6 +49,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    online: {
+        type: Boolean,
+        default: false,
+        required: false,
+    }
 }, {
     toJSON: {
         transform(doc, ret) {
@@ -55,7 +62,8 @@ const userSchema = new mongoose.Schema({
             delete ret.password;
             delete ret.__v;
         }
-    }
+    },
+    timestamps: true,
 });
 
 userSchema.statics.build = (attrs: UserAttr) => {
@@ -64,4 +72,4 @@ userSchema.statics.build = (attrs: UserAttr) => {
 
 const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 
-export { User };
+export { User, UserDoc };

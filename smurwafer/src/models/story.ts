@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-interface StoryAttr {
+export interface StoryAttr {
     title: string;
     text: string;
     gallery: string[];
@@ -50,7 +50,8 @@ const storySchema = new mongoose.Schema({
             delete ret._id;
             delete ret.__v;
         }
-    }
+    },
+    timestamps: true,
 });
 
 storySchema.statics.build = (attrs: StoryAttr) => {

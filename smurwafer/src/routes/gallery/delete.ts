@@ -14,7 +14,7 @@ Router.delete('/api/gallery/:id', requireAuth, async (req: Request, res: Respons
             throw new Error('No such gallery exists!');
         }
     
-        Gallery.findByIdAndDelete(id);
+        await Gallery.findByIdAndDelete(id);
     
         res.status(202).send({
             message: 'gallery deleted successfully',

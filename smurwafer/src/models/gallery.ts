@@ -6,6 +6,7 @@ interface GalleryAttr {
     videoUrl: string;
     caption: string;
     type: GalleryType;
+    isResourceUrl: boolean;
 };
 
 interface GalleryModel extends mongoose.Model<GalleryDoc> {
@@ -17,6 +18,7 @@ interface GalleryDoc extends mongoose.Document {
     videoUrl: string;
     caption: string;
     type: GalleryType;
+    isResourceUrl: boolean;
 }
 
 const gallerySchema = new mongoose.Schema({
@@ -37,6 +39,10 @@ const gallerySchema = new mongoose.Schema({
         default: GalleryType.Image,
         required: true,
     },
+    isResourceUrl: {
+        type: Boolean,
+        required: false,
+    },
 }, {
     toJSON: {
         transform(doc, ret) {
@@ -44,7 +50,8 @@ const gallerySchema = new mongoose.Schema({
             delete ret._id;
             delete ret.__v;
         }
-    }
+    },
+    timestamps: true,
 });
 
 gallerySchema.statics.build = (attrs: GalleryAttr) => {

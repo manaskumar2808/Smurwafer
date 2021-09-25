@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
 import { app } from './app';
+import socket from './socket';
+import * as http from 'http';
+import { User } from './src/models/user';
 
 const start = async () => {
     try {
@@ -12,8 +15,15 @@ const start = async () => {
         throw new Error('Error connecting to database!');
     }
 
-    app.listen(2000, () => {
+    const server: http.Server = app.listen(2000, () => {
         console.log('Listening on port:2000');
+    });
+
+    const io = socket.init(server);
+    io.on('connection', (socket) => {
+        socket.on('disconnect', (reason) => {
+            console.log('disconnected '+ reason);
+        });
     });
 }
 

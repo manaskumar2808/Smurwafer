@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { requireAuth } from '../../middlewares/require-auth';
+import { Profile } from '../../models/profile';
 import { User } from '../../models/user';
 
 const Router = express.Router();
@@ -44,6 +45,24 @@ Router.get('/api/current-user', requireAuth, async (req: Request, res: Response,
     }
 
 
+});
+
+Router.get('/api/profile/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = req.params.id;
+        const profile = await Profile.findOne({ user: id });
+    
+        if (!profile) {
+            throw new Error('No such profile exists!');
+        }
+    
+        res.status(200).send({
+            message: 'profile updated successfully',
+            profile,
+        });
+    } catch (err) {
+        next(err);
+    }
 });
 
 export { Router as UserShowRouter };

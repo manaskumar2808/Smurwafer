@@ -6,7 +6,7 @@ const Router = express.Router();
 Router.get('/api/story/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id;
-        const story = await Story.findById(id);
+        const story = await Story.findById(id).populate('author').populate('gallery').sort({ 'createdAt': -1 });
     
         if (!story) {
             throw new Error('Story not found!');
