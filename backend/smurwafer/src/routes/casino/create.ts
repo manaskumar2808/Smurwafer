@@ -13,6 +13,9 @@ Router.post('/api/casino', requireAuth, async (req: Request, res: Response, next
             gamble: id,
             type,
             vote,
+            rating: 0,
+            profit: 0,
+            active: true,
         });
     
         await casino.save();
